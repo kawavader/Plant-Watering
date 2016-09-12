@@ -1,8 +1,8 @@
-#define LED_PIN   4
-#define MOTOR_PIN   10 // PWM  
-#define MEASURE_PIN   A0
+#define LED_PIN             4
+#define MOTOR_PIN          10 // PWM  
+#define MEASURE_PIN        A0
 #define MEASURE_POWER_PIN   8
-#define BUTTON_PIN    2 // the number of the pushbutton pin
+#define BUTTON_PIN          2 // the number of the pushbutton pin
 
 bool humidyflag = false; // for autostart humidify change to true 
 int  meas_del=60; // moisture meausurment delay (sec)
@@ -10,31 +10,31 @@ int  hum_del=5;  // humidify delay (sec)
 int  moist_lim_high = 700;  
 int  moist_lim_low  = 200; 
 //int  moist_lim_low_2 = analogRead(POT_PIN_LOW);
-int  moist, hum_cycle=0, hum_cycle_limit=30;
+int  moist;
+int hum_cycle = 0; 
+int hum_cycle_limit = 30;
 int buttonState;             // the current reading from the input pin
 int lastButtonState = LOW;   // the previous reading from the input pin
 // the following variables are unsigned long's because the time, measured in miliseconds,
 // will quickly become a bigger number than can't be stored in an int.
 unsigned long lastCalibTime = 0;  // the last time the output pin was toggled
-unsigned long calibDelay = 5*1000;    // the debounce time; increase if the output flickers
+unsigned long calibDelay = 5*1000;    // button pressed time delay
 
 void setup()
 {
   Serial.begin(9600);
-  pinMode (MOTOR_PIN, OUTPUT);
-  pinMode (MEASURE_PIN, INPUT);
-  pinMode (MEASURE_POWER_PIN, OUTPUT);
-  //pinMode (POT_PIN_LOW, INPUT);
-  pinMode (LED_PIN, OUTPUT);
+  pinMode(MOTOR_PIN, OUTPUT);
+  pinMode(MEASURE_PIN, INPUT);
+  pinMode(MEASURE_POWER_PIN, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT);
-// pinMode(POT_PIN_LOW, INPUT);
   moist_measure();
 }
 
 int moist_measure ()
 {
   digitalWrite(MEASURE_POWER_PIN, HIGH);
-  delay(1000);
+  delay(500);
   int moist = 1024 - analogRead(MEASURE_PIN);
   digitalWrite(MEASURE_POWER_PIN, LOW);
   return moist;
@@ -48,9 +48,7 @@ int calibration_high()
   moist_lim_high = moist;
   digitalWrite(MEASURE_POWER_PIN, LOW);
   return moist_lim_high;
-  }
-
-
+}
 
 int moisture ()
 {
@@ -61,7 +59,7 @@ int moisture ()
   digitalWrite (LED_PIN, LOW);;
   hum_cycle++;
   return;
-  }
+}
 
 void loop() {
   
