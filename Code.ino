@@ -3,6 +3,7 @@
 #define MEASURE_PIN        A0
 #define MEASURE_POWER_PIN   8
 #define BUTTON_PIN          2 // the number of the pushbutton pin
+#define RESET_PIN           9 // the number of the pushbutton pin
 
 bool humidyflag = false; // for autostart humidify change to true 
 int  meas_del=60; // moisture meausurment delay (sec)
@@ -28,6 +29,8 @@ void setup()
   pinMode(MEASURE_POWER_PIN, OUTPUT);
   pinMode(LED_PIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT);
+  pinMode(RESET_PIN, OUTPUT);
+  digitalWrite(RESET_PIN; HIGH);
   moist_measure();
 }
 
@@ -108,6 +111,6 @@ void loop() {
         delay (500);
         digitalWrite(LED_PIN,LOW);
         delay (500);
-                                          }
+                                         }
                                      }
   }
