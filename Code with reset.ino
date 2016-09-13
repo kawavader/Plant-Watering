@@ -3,7 +3,7 @@
 #define MEASURE_PIN        A0
 #define MEASURE_POWER_PIN   8
 #define BUTTON_PIN          2 // the number of the pushbutton pin
-#define RESET_PIN           9 // the number of the pushbutton pin
+//#define RESET_PIN           9 // the number of the pushbutton pin
 
 bool humidyflag = false; // for autostart humidify change to true 
 int  meas_del=60; // moisture meausurment delay (sec)
@@ -29,8 +29,8 @@ void setup()
   pinMode(MEASURE_POWER_PIN, OUTPUT);
   pinMode(LED_PIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT);
-  pinMode(RESET_PIN, OUTPUT);
-  digitalWrite(RESET_PIN, HIGH);
+  //pinMode(RESET_PIN, OUTPUT);
+  //digitalWrite(RESET_PIN, HIGH);
   moist_measure();
 }
 
@@ -45,11 +45,12 @@ int moist_measure()
 
 int calibration_high()
 {
-  digitalWrite(MEASURE_POWER_PIN, HIGH);
-  delay(1000);
-  moist = 1024 - analogRead(MEASURE_PIN);
+  moist_measure();
+  //digitalWrite(MEASURE_POWER_PIN, HIGH);
+  //delay(1000);
+  //moist = 1024 - analogRead(MEASURE_PIN);
   moist_lim_high = moist;
-  digitalWrite(MEASURE_POWER_PIN, LOW);
+ // digitalWrite(MEASURE_POWER_PIN, LOW);
   return moist_lim_high;
 }
 
@@ -90,24 +91,24 @@ void loop() {
   // it'll be the lastButtonState:
   lastButtonState = reading;
 
-    
   if (millis() % (meas_del*1000) == 0) moist_measure(); //Returning moist value every (meas_del) sec
 
   if (moist < moist_lim_low)  humidyflag = true;
   if (moist > moist_lim_high) humidyflag = false;
     
-  Serial.print("LOW LIMIT-"); Serial.print(moist_lim_low); Serial.print("\t");
-  Serial.print("HIGH LIMIT-");Serial.print(moist_lim_high);   Serial.print("\t");
-  Serial.print("Current moist val"); Serial.print(moist); Serial.print("\t");
-  Serial.print("Humidify?-"); Serial.println(humidyflag);
-         
+  Serial.print("LOW LIMIT-");        Serial.print(moist_lim_low);  Serial.print("\t");
+  Serial.print("HIGH LIMIT-");       Serial.print(moist_lim_high); Serial.print("\t");
+  Serial.print("Current moist val"); Serial.print(moist);          Serial.print("\t");
+  Serial.print("Humidify?-");        Serial.println(humidyflag);
+            
   if (millis() % (meas_del*1000) == 1500 && (humidyflag)) moisture();
 
  if (hum_cycle > hum_cycle_limit) { 
     while(hum_cycle > hum_cycle_limit) {
       reading = digitalRead(BUTTON_PIN);
       if (reading == HIGH) {
-       digitalWrite(RESET_PIN, LOW);
+       hum_cycle = 0;
+       //digitalWrite(RESET_PIN, LOW);
                               }
       digitalWrite(LED_PIN,HIGH);
       delay (500);
