@@ -19,7 +19,8 @@ int  lastButtonState = LOW;   // the previous reading from the input pin
 // the following variables are unsigned long's because the time, measured in miliseconds,
 // will quickly become a bigger number than can't be stored in an int.
 unsigned long lastCalibTime = 0;  // the last time the output pin was toggled
-unsigned long calibDelay = 3*1000;    // button pressed time delay
+unsigned long calibDelay = 3*1000;    // button pressed time delay for calibration
+unsigned long resetDelay = 100;    // button pressed time delay for reset
 
 void setup()
 {
@@ -34,13 +35,18 @@ void setup()
   moist_measure();
 }
 
-int moist_measure ()
+int moist_measure()
 {
   digitalWrite(MEASURE_POWER_PIN, HIGH);
   delay(500);
   int moist = 1024 - analogRead(MEASURE_PIN);
   digitalWrite(MEASURE_POWER_PIN, LOW);
   return moist;
+}
+
+int reset_board()
+{
+  digitalWrite(RESET_PIN, LOW);
 }
 
 int calibration_high()
@@ -86,14 +92,12 @@ void loop() {
     // whatever the reading is at, it's been there for longer
     // than the calib delay, so take it as the actual current state:
 
-    
-
   // save the reading.  Next time through the loop,
   // it'll be the lastButtonState:
   lastButtonState = reading;
 
     
-    if (times % (meas_del*1000) == 0) moist_measure(); //Returning moist value every (meas_del) sec
+    if (millis() % (meas_del*1000) == 0) moist_measure(); //Returning moist value every (meas_del) sec
 
     if (moist < moist_lim_low)  humidyflag = true;
     if (moist > moist_lim_high) humidyflag = false;
@@ -103,10 +107,21 @@ void loop() {
    Serial.print("Current moist val"); Serial.print(moist); Serial.print("\t");
    Serial.print("Humidify?-"); Serial.println(humidyflag);
          
-   if (times % (meas_del*1000) == 1500 && (humidyflag)) moisture();
+   if (millis() % (meas_del*1000) == 1500 && (humidyflag)) moisture();
 
    if (hum_cycle > hum_cycle_limit) { 
       while(hum_cycle > hum_cycle_limit) {
+        if (reading != lastButtonState) {
+          lastCalibTime = millis();  // reset the debouncing timer
+                                        }
+          if ((millis() - lastCalibTime) > resetDelay) reset_board()();
+          // whatever the reading is at, it's been there for longer
+          // than the calib delay, so take it as the actual current state:
+
+          // save the reading.  Next time through the loop,
+          // it'll be the lastButtonState:
+          lastButtonState = reading;
+        
         digitalWrite(LED_PIN,HIGH);
         delay (500);
         digitalWrite(LED_PIN,LOW);
