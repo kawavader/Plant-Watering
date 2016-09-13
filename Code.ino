@@ -12,14 +12,14 @@ int  moist_lim_high = 700;
 int  moist_lim_low  = 200; 
 //int  moist_lim_low_2 = analogRead(POT_PIN_LOW);
 int  moist;
-int hum_cycle = 0; 
-int hum_cycle_limit = 30;
-int buttonState;             // the current reading from the input pin
-int lastButtonState = LOW;   // the previous reading from the input pin
+int  hum_cycle = 0; 
+int  hum_cycle_limit = 30;
+int  buttonState;             // the current reading from the input pin
+int  lastButtonState = LOW;   // the previous reading from the input pin
 // the following variables are unsigned long's because the time, measured in miliseconds,
 // will quickly become a bigger number than can't be stored in an int.
 unsigned long lastCalibTime = 0;  // the last time the output pin was toggled
-unsigned long calibDelay = 5*1000;    // button pressed time delay
+unsigned long calibDelay = 3*1000;    // button pressed time delay
 
 void setup()
 {
@@ -30,7 +30,7 @@ void setup()
   pinMode(LED_PIN, OUTPUT);
   pinMode(BUTTON_PIN, INPUT);
   pinMode(RESET_PIN, OUTPUT);
-  digitalWrite(RESET_PIN; HIGH);
+  digitalWrite(RESET_PIN, HIGH);
   moist_measure();
 }
 
