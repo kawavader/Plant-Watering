@@ -105,8 +105,7 @@ void loop() {
 
  if (hum_cycle > hum_cycle_limit) { 
     while(hum_cycle > hum_cycle_limit) {
-      reading = digitalRead(BUTTON_PIN);
-      if (reading == HIGH) {
+      if (digitalRead(BUTTON_PIN) == HIGH) {
        hum_cycle = 0;
        //digitalWrite(RESET_PIN, LOW);
                               }
