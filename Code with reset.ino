@@ -114,7 +114,7 @@ void loop() {
         if (reading != lastButtonState) {
           lastCalibTime = millis();  // reset the debouncing timer
                                         }
-          if ((millis() - lastCalibTime) > resetDelay) reset_board()();
+          if ((millis() - lastCalibTime) > resetDelay) reset_board();
           // whatever the reading is at, it's been there for longer
           // than the calib delay, so take it as the actual current state:
 
