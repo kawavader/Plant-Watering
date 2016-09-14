@@ -5,18 +5,18 @@
 #define BUTTON_PIN          2 // the number of the pushbutton pin
 
 bool humidyflag = false; // for autostart humidify change to true 
-int  meas_del=6; // moisture meausurment delay (sec)
-int  hum_del=1;  // humidify delay (sec)
+int  meas_del=6;                     // moisture meausurment delay (sec)
+int  hum_del=1;       // humidify delay (sec)
 int  hum_cycle_limit = 2;
-int  moist_lim_high = 450; //can be changed during calibration  
+int  moist_lim_high = 450;           //can be changed during calibration  
 int  moist_lim_low  = 200; 
 unsigned long calibDelay = 3 * 1000; // button pressed time delay for calibration
 
 int  moist;
 int  hum_cycle = 0; 
-int  buttonState;             // the current reading from the input pin
-int  lastButtonState = LOW;   // the previous reading from the input pin
-unsigned long lastCalibTime = 0;  // the last time the output pin was toggled
+int  buttonState;                    // the current reading from the input pin
+int  lastButtonState = LOW;          // the previous reading from the input pin
+unsigned long lastCalibTime = 0;     // the last time the output pin was toggled
 
 void setup()
 {
